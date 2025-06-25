@@ -201,3 +201,26 @@ Return the response in JSON format with keys: tone, clarity, helpfulness."""
         except Exception as e:
             print(f"Failed to generate feedback: {e}")
             return None 
+
+    @staticmethod
+    async def get_recent_emails():
+        cursor = emails_collection.find().sort("timestamp", -1).limit(20)
+        emails = []
+        async for doc in cursor:
+            doc["_id"] = str(doc["_id"])
+            emails.append(doc)
+        return emails
+
+    @staticmethod
+    async def get_email_by_id(email_id: str):
+        try:
+            object_id = ObjectId(email_id)
+        except InvalidId:
+            return None
+        
+        email_doc = await emails_collection.find_one({"_id": object_id})
+        
+        if email_doc:
+            email_doc["_id"] = str(email_doc["_id"])
+        
+        return email_doc 

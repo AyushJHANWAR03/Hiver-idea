@@ -87,4 +87,24 @@ async def generate_feedback(email_id: str = Path(...)):
         return feedback
     except Exception as e:
         print(f"Error generating feedback: {e}")
-        raise HTTPException(status_code=500, detail="Failed to generate feedback.") 
+        raise HTTPException(status_code=500, detail="Failed to generate feedback.")
+
+@router.get("/emails")
+async def get_recent_emails():
+    try:
+        emails = await EmailService.get_recent_emails()
+        return emails
+    except Exception as e:
+        print(f"Error fetching recent emails: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch recent emails.")
+
+@router.get("/emails/{email_id}")
+async def get_email(email_id: str = Path(..., title="The ID of the email to get")):
+    try:
+        email = await EmailService.get_email_by_id(email_id)
+        if email is None:
+            raise HTTPException(status_code=404, detail="Email not found")
+        return email
+    except Exception as e:
+        print(f"Error fetching email {email_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch email.") 
