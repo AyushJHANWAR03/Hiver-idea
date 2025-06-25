@@ -7,7 +7,8 @@ from fastapi import HTTPException
 from bson import ObjectId
 from bson.errors import InvalidId
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Use the new OpenAI client interface
+openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 INTENT_CATEGORIES = [
     "Refund",
@@ -48,13 +49,13 @@ class EmailService:
         summary = ""
 
         try:
-            response = openai.ChatCompletion.create(
+            response = openai_client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=150,
                 temperature=0.2
             )
-            gpt_content = response["choices"][0]["message"]["content"]
+            gpt_content = response.choices[0].message.content
             print("GPT Raw Response:", gpt_content)
 
             import json
@@ -127,13 +128,13 @@ Reply:"""
         print("GPT Prompt for reply:", prompt)
         
         try:
-            response = openai.ChatCompletion.create(
+            response = openai_client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=500,
                 temperature=0.7
             )
-            reply_content = response["choices"][0]["message"]["content"].strip()
+            reply_content = response.choices[0].message.content.strip()
             print("Generated Reply:", reply_content)
 
             return {
@@ -187,13 +188,13 @@ Reply:
 Return the response in JSON format with keys: tone, clarity, helpfulness."""
         print("GPT Prompt for feedback:", prompt)
         try:
-            response = openai.ChatCompletion.create(
+            response = openai_client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=200,
                 temperature=0.2
             )
-            feedback_content = response["choices"][0]["message"]["content"]
+            feedback_content = response.choices[0].message.content
             print("GPT Feedback Response:", feedback_content)
             import json
             feedback = json.loads(feedback_content)
