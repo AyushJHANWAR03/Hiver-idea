@@ -3,6 +3,7 @@ from models.email import EmailIngest
 from services.email_service import EmailService
 from pymongo.errors import PyMongoError
 from typing import Dict
+import random
 
 router = APIRouter()
 
@@ -107,4 +108,33 @@ async def get_email(email_id: str = Path(..., title="The ID of the email to get"
         return email
     except Exception as e:
         print(f"Error fetching email {email_id}: {e}")
-        raise HTTPException(status_code=500, detail="Failed to fetch email.") 
+        raise HTTPException(status_code=500, detail="Failed to fetch email.")
+
+@router.get("/generate-random-email")
+async def generate_random_email():
+    subjects = [
+        "Issue with product quality",
+        "Request for refund",
+        "Order not delivered",
+        "Product inquiry",
+        "Partnership proposal"
+    ]
+    bodies = [
+        "Hey, I recently bought a product from your store, but it stopped working within a week. I tried troubleshooting as per the manual, but nothing worked. Can you help me with a replacement or refund? I am disappointed as I expected better quality from your brand. Please let me know the next steps and how soon this can be resolved.",
+        "I placed an order two weeks ago and it still hasn't arrived. The tracking information hasn't updated in several days, and I'm starting to get worried. Could you please provide an update on the status of my order? If there are any issues, I would appreciate a prompt resolution or a refund if the item cannot be delivered soon.",
+        "I'm interested in learning more about your product features, especially regarding compatibility with other devices I own. Could you send me detailed specifications and any user manuals available? Also, are there any current promotions or discounts for first-time buyers?",
+        "We are interested in a partnership with your company. Our team believes there is a strong synergy between our services and your product offerings. Please let us know the next steps for initiating a formal discussion, and if you have any partnership decks or case studies, kindly share them as well.",
+        "I received a damaged item in my recent order. The packaging was intact, but the product inside was broken and unusable. I have attached photos for your reference. I would like to request a full refund or a replacement as soon as possible. Please advise on how to proceed and whether you need the damaged item returned."
+    ]
+    emails = [
+        "customer1@example.com",
+        "user2@example.com",
+        "partner@company.com",
+        "complaintbox@example.net",
+        "info@randommail.com"
+    ]
+    return {
+        "subject": random.choice(subjects),
+        "body": random.choice(bodies),
+        "from": random.choice(emails)
+    } 
