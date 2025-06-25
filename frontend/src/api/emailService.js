@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://127.0.0.1:8000';
+const API_BASE = process.env.REACT_APP_API_BASE || 'https://hiver-idea.onrender.com';
 
 export const ingestEmail = async (payload) => {
   return axios.post(`${API_BASE}/ingest-email`, payload);
