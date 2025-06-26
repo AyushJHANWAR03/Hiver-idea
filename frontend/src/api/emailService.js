@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://65.0.71.204';
+const API_BASE = process.env.REACT_APP_API_BASE || 'https://65-0-71-204.nip.io';
 
 export const ingestEmail = async (payload) => {
   return axios.post(`${API_BASE}/ingest-email`, payload);
