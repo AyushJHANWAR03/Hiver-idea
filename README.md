@@ -49,7 +49,7 @@ This project demonstrates backend and frontend skills, including AI integration,
 ### Deployment
 
 - **Frontend:** Deployed on Netlify at [https://hiver-email.netlify.app](https://hiver-email.netlify.app)
-- **Backend:** Deployed on Render
+- **Backend:** Deployed on an Amazon EC2 Ubuntu server (FastAPI)
 
 #### Netlify Routing Fix
 

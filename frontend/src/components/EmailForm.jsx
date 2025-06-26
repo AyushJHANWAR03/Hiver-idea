@@ -22,7 +22,7 @@ export default function EmailForm({ onSubmit, loading }) {
     setGenLoading(true);
     setError('');
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE || 'https://hiver-idea.onrender.com'}/generate-random-email`);
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE || 'http://65.0.71.204'}/generate-random-email`);
       setSubject(res.data.subject);
       setBody(res.data.body);
       setFrom(res.data.from);
